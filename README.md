@@ -1,13 +1,8 @@
-# michaelcereda.com
-Source code of my website (michaelcereda.com)
+# dominictracey.com
+Source code of my website (dominictracey.com)
 
-It has been built in __React__, __HTML__, __CSS__.
+It has been built using [Gatsby](https://github.com/gatsbyjs/gatsby), [React](https://facebook.github.io/react/), [D3](https://d3js.org/), [Masonry](https://masonry.desandro.com/), [react-images](https://github.com/jossmac/react-images), [Aphrodite](https://github.com/Khan/aphrodite), [react-motion](https://github.com/chenglou/react-motion), [Cloudinary](http://cloudinary.com),
 
-Instead of creating a simple Wordpress website i decided to develop an Isomorphic/Universal React based website.  
-
-I wrote some posts on my blog about the making of this website, if you're curious about it [check here](https://medium.com/@michaelcereda/creating-an-isomorphic-universal-website-with-react-part-1-a905350acba8#.rc2xxzjg5)
-
-Or if you want to see it in action: http://michaelcereda.com
 
 #License
 Everything except "content files" (Images, md/text files containing  informations, etc) can be used for learning purposes.
