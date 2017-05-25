@@ -60,10 +60,10 @@ class Photos extends Component  {
     }
   }
 
-  getCloudinaryThumbnail = (image) => {
+  getCloudinaryThumbnail = (image, size) => {
     //http://res.cloudinary.com/dominictracey/image/upload/c_scale,w_263/v1495214231/tango/14435233_10157779381190001_5920112255922826196_o_1.jpg
     if (!!image) {
-      return `${cloudinaryBaseUrl}${cloudinaryCloudName}${cloudinaryImageFragment}c_scale,w_240/v${image.version}/${image.public_id}.${image.format}`
+      return `${cloudinaryBaseUrl}${cloudinaryCloudName}${cloudinaryImageFragment}c_scale,w_${size}/v${image.version}/${image.public_id}.${image.format}`
     } else {
       return ``
     }
@@ -78,6 +78,19 @@ class Photos extends Component  {
     } else {
       return ``
     }
+  }
+
+  calcThumbnailSize = (windowWidth) => {
+    var size
+    if (windowWidth > 1050) {
+      size = Math.round(windowWidth / 6) - 4*4
+    } else if (windowWidth < 800) {
+      size = Math.round(windowWidth) - 4
+    } else { // in the middle
+      size = Math.round(windowWidth / 4) - 4*3
+    }
+
+    return size
   }
 
   // when we have pulled the raw info from Cloudinary, we have a state that looks like:
@@ -101,12 +114,13 @@ class Photos extends Component  {
   buildGallery = (album) => {
 
     var gallery = []
+    var thumbnailSize = this.calcThumbnailSize(this.props.windowWidth)
     album.resources.map((image) => {
       const caption = image.context && image.context.custom && image.context.custom.caption ? image.context.custom.caption : ''
       const alt = image.context && image.context.custom && image.context.custom.alt ? image.context.custom.alt : 'photo'
       const img = {
         src: this.getCloudinaryUri(image),
-        thumbnail: this.getCloudinaryThumbnail(image),
+        thumbnail: this.getCloudinaryThumbnail(image, thumbnailSize),
         caption: caption,
         alt: alt,
         // srcset: [
@@ -174,8 +188,10 @@ class Photos extends Component  {
 
 const classes = StyleSheet.create({
   gallery: {
-    paddingLeft: '20px',
     lineHeight: '1em',
+    '@media (min-width: 500px)': {
+        paddingLeft: '20px',
+    },
   },
   title: {
 

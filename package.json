@@ -45,7 +45,10 @@
     "string": "^3.3.1",
     "textures": "^1.0.5",
     "toml-js": "0.0.8",
-    "typography": "^0.7.0",
+    "typography": "^0.15.8",
+    "typography-breakpoint-constants": "^0.15.10",
+    "typography-plugin-code": "^0.15.10",
+    "typography-theme-lincoln": "^0.15.10",
     "velocity-react": "^1.1.5",
     "whatwg-fetch": "^1.0.0"
   },

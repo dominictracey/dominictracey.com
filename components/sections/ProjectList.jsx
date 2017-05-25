@@ -124,7 +124,7 @@ export class ProjectList extends React.Component{
             <div >There is lots of my code on Github:
             </div>
             {/* <div className='item-anchors'>{opensource}</div> */}
-            <div className='item-anchors'><a href='http://github.com/dominictracey'>github.com/dominictracey</a></div>
+            <div className='inner'><a href='http://github.com/dominictracey'>github.com/dominictracey</a></div>
           </div>
           </div>
           : null

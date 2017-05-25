@@ -99,7 +99,7 @@ class PictureGallery extends Component {
 
     return (
         <Masonry
-            className={'my-gallery-class'} // default ''
+            className={css(classes.gallery)} // default ''
             elementType={'div'} // default 'div'
             options={masonryOptions} // default {}
             disableImagesLoaded={false} // default false
@@ -160,16 +160,8 @@ class PictureGallery extends Component {
 
   // anchor
   thumbnail: {
-    //boxSizing: 'border-box',
-    //display: 'block',
-    //flexGrow: 1,
-    //minWidth: '360px',
-    // float: 'left',
-    //lineHeight: 0,
     paddingRight: gutter.small,
     paddingBottom: gutter.small,
-    //overflow: 'hidden',
-
     '@media (min-width: 500px)': {
       paddingRight: gutter.large,
       paddingBottom: gutter.large,

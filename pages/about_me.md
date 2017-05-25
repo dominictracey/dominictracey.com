@@ -10,7 +10,7 @@ icon: heart
 ---
 
 
-## Heya, thanks for visiting
+## Professional
 
 I've been a software engineer for 25 years and try to stay out in front of the ever-changing landscape that is development. I appreciate the fluidity of the medium we create in, and take satisfaction from solutions that are insightfully conceived and elegantly executed.
 
