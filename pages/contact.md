@@ -1,8 +1,8 @@
 ---
 title: Contact
 subtitle: >
-  You can find me on various social media outlets,<br/>
-   though email is the best way to reach me.
+  You may find me on various social media outlets,<br/>
+   Email is the best way to reach me.
 
 icon: phone
 ---

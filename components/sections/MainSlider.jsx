@@ -18,12 +18,14 @@ export class MainSlider extends React.Component{
 
     var styles = _.cloneDeep(this.constructor.styles);
 
-    if (this.props.windowWidth < 800) {
+    if (this.props.windowWidth < 1050) {
       styles.headHoneycomb.textAlign = 'center';
       styles.headHoneycomb.width = 'auto';
       styles.headHoneycomb.marginLeft = 'auto';
-      styles.headHoneycomb.borderLeft = 'none';
-      styles.container.background = 'url(../assets/mini-me.jpg)'
+      //styles.headHoneycomb.borderLeft = 'none';
+      if (this.props.windowWidth < 800) {
+        styles.container.background = 'url(../assets/mini-me.jpg)'
+      }
       styles.container.backgroundSize = 'cover';
       styles.container.backgroundRepeat = 'no-repeat';
       delete styles.headMeta.top;
@@ -34,7 +36,7 @@ export class MainSlider extends React.Component{
       styles.headContent.height = '99.5%'
       styles.headContent.bottom = '0px'
       styles.headContent.top = '0px'
-      
+      styles.headContent.marginLeft = '0px'
     }
 
     // textured box
@@ -71,10 +73,10 @@ export class MainSlider extends React.Component{
              {node.toReact()}
         </div>
         <div style={styles.headContent} className='main_heading'>
-        <h1 style={{fontSize:'2em', lineHeight: '2.60rem',color:'white', marginBottom:0}}
+        <h1 style={styles.headName}
           dangerouslySetInnerHTML={{__html:this.props.headline}}></h1>
         <div dangerouslySetInnerHTML={{__html:this.props.body}}
-             style={{fontSize:'1.2em', lineHeight:'1.2em', color:'white'}} />
+             style={styles.headTagline} />
       </div>
       </div>
       </div>
@@ -86,7 +88,6 @@ export class MainSlider extends React.Component{
 MainSlider.styles = {
   container:{
     position: 'relative',
-
     background:'url(../assets/me.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundSize:'cover'
@@ -103,19 +104,18 @@ MainSlider.styles = {
     borderLeft: '5px solid #fbbf69',
     borderBottom: '5px solid #fbbf69',
     background:'rgba(0, 0, 0, 0.27)',
-
   },
   headContent: {
     marginLeft:'65%',
-    paddingLeft: 20,
-    paddingTop: 50,
-    width:'34.8%',
-    height:'97.5%',
+    //paddingLeft: 20,
+    //paddingTop: 50,
+    width:'35%',
+    height:'100%',
     color: '#d0d0d0',
     background:'rgba(0, 0, 0, 0.51)',
     position: 'absolute',
-    bottom: '5px',
-    left: '5px',
+    bottom: '0px',
+    //left: '5px',
   },
   headMeta:{
     position: 'absolute',
@@ -123,6 +123,19 @@ MainSlider.styles = {
     left: '50%',
     transform: 'translate(-50%,-50%)',
     width: '80%',
-
-  }
+  },
+  headName:{
+    fontSize:'2em',
+    lineHeight: '2.60rem',
+    color:'white',
+    marginBottom:0,
+    paddingTop:'20px',
+    paddingLeft:'20px',
+  },
+  headTagline:{
+    fontSize:'1.2em',
+    lineHeight:'1.2em',
+    color:'white',
+    paddingLeft:'40px',
+  },
 }

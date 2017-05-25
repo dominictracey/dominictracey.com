@@ -1,7 +1,7 @@
 ---
 title: Photos
 subtitle: >
-  Some captured moments
+  Attempting to portray my life as more interesting than it actually is
 
 icon: camera
 ---
