@@ -1,88 +1,106 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import {Navigator} from '../utils/navigator.js';
+import PropTypes from 'prop-types'
+import { Navigator } from '../utils/navigator.js'
 
-var _ = require('lodash');
-import velocityHelpers from 'velocity-react/velocity-helpers';
+var _ = require('lodash')
+import velocityHelpers from 'velocity-react/velocity-helpers'
 
-import {SideBlock} from './SideBlock';
+//import {SideBlock} from './SideBlock'
 
-export class Section extends React.Component{
-  constructor(props){
-    super(props);
-
-  }
-  componentDidMount(){
-    var node = ReactDOM.findDOMNode(this);
-    this.elementBox=node.getBoundingClientRect();
-    this.elementHeight = node.clientHeight;
+class Section extends Component {
+  constructor(props) {
+    super(props)
   }
 
-  componentWillUpdate(){
-    var node = ReactDOM.findDOMNode(this);
+  componentDidMount() {
+    var node = ReactDOM.findDOMNode(this)
+    this.elementBox=node.getBoundingClientRect()
+    this.elementHeight = node.clientHeight
+  }
+
+  componentWillUpdate() {
+    var node = ReactDOM.findDOMNode(this)
     // elementBox = this.props.node.getBoundingClientRect();
     // elementHeight = this.props.node.clientHeight;
 
-    this.elementBox=node.getBoundingClientRect();
-    this.elementHeight = node.clientHeight;
+    this.elementBox=node.getBoundingClientRect()
+    this.elementHeight = node.clientHeight
 
-    let url = Navigator.genURL(this.props.section_name || this.props.parentName);
+    let url = Navigator.genURL(this.props.section_name || this.props.parentName)
 
-    if(this.elementBox.top<=0  && this.elementBox.bottom>0 && location.hash!==url){
+    if(this.elementBox.top<=0  && this.elementBox.bottom>0 && location.hash!==url) {
       Navigator.setURL(this.props.section_name || this.props.parentName)
 
       // history.replaceState(null, null, urlId);
     }
   }
-  render(){
-    var styles = _.cloneDeep(this.constructor.styles);
-    var isSmallScreen = this.props.windowWidth<800;
+
+  render() {
+    const { parentName, section_name, windowWidth, windowHeight,
+            scollableBgColor, fixed_column, isOpen, className } = this.props
+
+    var styles = _.cloneDeep(this.constructor.styles)
+    var isSmallScreen = windowWidth<800
 
 
-    if(this.props.scollableBgColor) styles.scrollable.backgroundColor = this.props.scollableBgColor;
-    styles.scrollable.minHeight = this.props.windowHeight;
+    if(scollableBgColor) styles.scrollable.backgroundColor = scollableBgColor
+    styles.scrollable.minHeight = this.props.windowHeight
 
     //traditional classnames
-    var sectionClass = [this.props.className];
+    var sectionClass = [className]
 
-    if(isSmallScreen) sectionClass.push('sm');
-    if(this.props.isOpen) sectionClass.push('open');
+    if(isSmallScreen) sectionClass.push('sm')
+    if(this.props.isOpen) sectionClass.push('open')
 
     return(<section
-
       ref='sectionContainer'
-      className={this.props.parentName}
-      id={this.props.section_name}
-      {...this.props}
-      style={{...styles.container,
-        minHeight:this.props.windowHeight}}
+      className={parentName}
+      id={section_name}
+      // {...this.props}
+      style={{ ...styles.container,
+        minHeight:windowHeight }}
         className={sectionClass.join(' ')}
         >
-        {(this.props.fixed_column)?
-          React.cloneElement(this.props.fixed_column,
+          {(fixed_column)?
+            React.cloneElement(this.props.fixed_column,
+              {
+                height:windowHeight,
+                isOpen:isOpen,
+                elementBox: this.elementBox,
+                elementHeight: this.elementHeight,
+                isSmallScreen:isSmallScreen
+              })
+              : null
+            }
             {
-              height:this.props.windowHeight,
-              isOpen:this.props.isOpen,
-              elementBox: this.elementBox,
-              elementHeight: this.elementHeight,
-              isSmallScreen:isSmallScreen
-            })
-            : null
-          }
-          {
-            (this.props.fixed_column)?
-            <div style={styles.scrollable} className='scrollable-column'>
-              {this.props.children}
-            </div>
-            :
-            <div>
-              {this.props.children}
-            </div>
-          }
+              (fixed_column)?
+              <div style={styles.scrollable} className='scrollable-column'>
+                {this.props.children}
+              </div>
+              :
+              <div>
+                {this.props.children}
+              </div>
+            }
 
 
           </section>)
         }
+      }
+
+      Section.propTypes = {
+        'windowWidth':  PropTypes.number,
+        'windowHeight':  PropTypes.number,
+        'menuCloseSection':  PropTypes.bool,
+        'projects':  PropTypes.array,
+        'onProjectOpen':  PropTypes.func,
+        'section_name':  PropTypes.string,
+        'parentName':  PropTypes.string,
+        'isOpen':  PropTypes.bool,
+        'openItem':  PropTypes.string,
+        'fixed_column':  PropTypes.object,
+        'onCloseItem':PropTypes.func,
       }
       // {this.state.elementHeight} |
       // {this.this.state.elementBox.top} |
@@ -92,12 +110,13 @@ export class Section extends React.Component{
           defaultDuration: 750,
           calls:
           [
-            [{translateX: buttonPosition.left, translateY: buttonPosition.top}],
-            [{translateX: buttonPosition.left, translateY: '180px'}]
+            [{ translateX: buttonPosition.left, translateY: buttonPosition.top }],
+            [{ translateX: buttonPosition.left, translateY: '180px' }]
           ]
         })
       }
     }
+
     Section.styles = {
       container:{
         position: 'relative',
@@ -112,3 +131,5 @@ export class Section extends React.Component{
       },
 
     }
+
+export default Section

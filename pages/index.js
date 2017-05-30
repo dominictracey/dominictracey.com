@@ -1,9 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router'
-import { prefixLink } from 'gatsby-helpers'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import access from 'safe-access'
-import { Menu } from '../components/Menu.jsx'
+import Menu from '../components/Menu.jsx'
 import { MainSlider, ProjectList, AboutMe, Photos, Contact, Medium, Footer } from '../components/sections'
 
 import { Navigator } from '../utils/navigator.js'
@@ -21,7 +20,7 @@ import 'css/zenburn.css'
 #ffffff 2100px
 */
 
-export default class Index extends React.Component {
+class Index extends Component {
   constructor (props) {
     super(props)
 
@@ -44,7 +43,6 @@ export default class Index extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
     Navigator.goToHash(1000, ['home'])
     window.isMobile = mobilecheck()
 
@@ -61,14 +59,14 @@ export default class Index extends React.Component {
     window.removeEventListener('scroll', this.handleScroll)
   }
 
-  handleSectionOpen (e){
+  handleSectionOpen (e) {
     this.setState({
       menuCloseSection: true,
     })
     //this.props.onSectionOpen && this.props.onSectionOpen(e)
   }
 
-  handleResize (e){
+  handleResize (e) {
     var newDimensions = {
       windowWidth:  window && window.innerWidth,
     }
@@ -106,23 +104,23 @@ export default class Index extends React.Component {
   render () {
 
     let sitemap = [
-      {
-        section: 'home',
-        component: <MainSlider
-          {... this.state }
-          className='color-one'
-          icon='home'
-          {...this.pageGroups.root.intro.data}/>
-      },
-      {
-        section: 'projects',
-        component: <ProjectList
-          icon='cup'
-          className='color-two projects'
-          {... this.state }
-          projects={this.pageGroups.projects}
-          onProjectOpen={this.handleSectionOpen.bind(this)}/>
-      },
+      // {
+      //   section: 'home',
+      //   component: <MainSlider
+      //     {... this.state }
+      //     className='color-one'
+      //     icon='home'
+      //     {...this.pageGroups.root.intro.data}/>
+      // },
+      // {
+      //   section: 'projects',
+      //   component: <ProjectList
+      //     icon='cup'
+      //     className='color-two projects'
+      //     {... this.state }
+      //     projects={this.pageGroups.projects}
+      //     onProjectOpen={this.handleSectionOpen.bind(this)}/>
+      // },
       {
       section: 'about-me',
       component: <AboutMe
@@ -131,48 +129,49 @@ export default class Index extends React.Component {
           {... this.state }
           {...this.pageGroups.root.about_me.data} />
       },
-      {
-      section: 'photos',
-      component: <Photos
-          className='color-one photos'
-          icon='camera'
-          {... this.state }
-          {...this.pageGroups.root.photos.data} />
-      },
-        // {
-        //   section: 'medium',
-        //   component: <Medium
-        //     icon='book-open'
-        //       className='color-four'
-        //       {... this.state }/>
-        //   },
-          {
-            section: 'contact',
-            component: <Contact
-                className='color-five contact'
-                {... this.state }
-                {...this.pageGroups.root.contact.data}
-                icon='phone'/>
-            },
+      // {
+      // section: 'photos',
+      // component: <Photos
+      //     className='color-one photos'
+      //     icon='camera'
+      //     {... this.state }
+      //     {...this.pageGroups.root.photos.data} />
+      // },
+      //   // {
+      //   //   section: 'medium',
+      //   //   component: <Medium
+      //   //     icon='book-open'
+      //   //       className='color-four'
+      //   //       {... this.state }/>
+      //   //   },
+      // {
+      //   section: 'contact',
+      //   component: <Contact
+      //       className='color-five contact'
+      //       {... this.state }
+      //       {...this.pageGroups.root.contact.data}
+      //       icon='phone'/>
+      //   },
 
       ]
     Navigator.load(sitemap)
     //sortedPages.forEach((page) => {
-    return (<div style={{position:'relative'}}>
-    <Menu
-      sections={sitemap}
-      />
-    {
-      sitemap.map(function(item, index) {
-        let el = React.cloneElement(item.component, {
-            key:item.section,
-            section_name:item.section,
-            ref:item.section
-          })
+    return (
+      <div style={{ position:'relative' }}>
+      <Menu
+        sections={sitemap}
+        />
+      {
+        sitemap.map(function(item) {
+          let el = React.cloneElement(item.component, {
+              key:item.section,
+              section_name:item.section,
+              ref:item.section
+            })
 
-        return el
-      })
-    }
+          return el
+        })
+      }
     {/* <Footer
         className='color-six footer'
         {... this.state }
@@ -183,3 +182,9 @@ export default class Index extends React.Component {
 //  {/*className='color_2'*/}
   }
 }
+
+Index.propTypes = {
+  route: PropTypes.object,
+}
+
+export default Index

@@ -1,52 +1,52 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import access from 'safe-access';
-var _ = require('lodash');
-import {Motion, spring, presets} from 'react-motion';
-import {slugify} from '../utils/strings.js';
-import {Navigator} from '../utils/navigator.js';
-import {ReadingIndicator} from './ReadingIndicator';
+import access from 'safe-access'
+var _ = require('lodash')
+import { Motion, spring, presets } from 'react-motion'
+import { slugify } from '../utils/strings.js'
+import { Navigator } from '../utils/navigator.js'
+import { ReadingIndicator } from './ReadingIndicator'
 
-class DataBox extends React.Component{
-  render(){
-    return <div className='data-block'>
-      <span className='data-block-title'>
-        {this.props.title.toUpperCase()+ ': '}</span>
-      <span className='data-block-content'>{(typeof this.props.content=== 'string')
-              ? this.props.content
-              : this.props.content.join(', ')}</span>
-      </div>
-  }
+const DataBox = (props) => {
+
+  return (<div className='data-block'>
+    <span className='data-block-title'>
+      {props.title.toUpperCase()+ ': '}</span>
+    <span className='data-block-content'>{(typeof props.content=== 'string')
+            ? props.content
+            : props.content.join(', ')}</span>
+    </div>)
 }
 
-class ProjectSidebar extends React.Component{
-  render(){
-    return <div>
-      test
-      </div>
-  }
+DataBox.propTypes = {
+  title: PropTypes.string,
+  content: PropTypes.string,
 }
 
-export class Project extends React.Component{
-  constructor(props){
-    super(props);
+export class Project extends React.Component {
+  constructor(props) {
+    super(props)
     this.state = {
       mouseEvent:false
     }
   }
-  componentDidMount(){
-    var node = ReactDOM.findDOMNode(this);
-    this.elementBox=node.getBoundingClientRect();
-    this.elementHeight = node.clientHeight;
+
+  componentDidMount() {
+    var node = ReactDOM.findDOMNode(this)
+    this.elementBox=node.getBoundingClientRect()
+    this.elementHeight = node.clientHeight
   }
-  componentWillUpdate(){
-    var node = ReactDOM.findDOMNode(this);
-    this.elementBox=node.getBoundingClientRect();
-    this.elementHeight = node.clientHeight;
+
+  componentWillUpdate() {
+    var node = ReactDOM.findDOMNode(this)
+    this.elementBox=node.getBoundingClientRect()
+    this.elementHeight = node.clientHeight
   }
-  handleClick(e){
+
+  handleClick(e) {
     //this.props.onClick(e, this.props.data);
-    let { url, title } = this.props.data;
+    let { url, title } = this.props.data
 
     if(url) {
       ga('send', 'event', {
@@ -54,47 +54,46 @@ export class Project extends React.Component{
         eventAction: 'click',
         eventLabel: url,
         transport: 'beacon'
-      });
+      })
 
-      var win = window.open(url, '_blank');
-      win.focus();
-        return ;
+      var win = window.open(url, '_blank')
+      win.focus()
+        return
     }else {
       ga('send', 'event', {
         eventCategory: 'Open Project',
         eventAction: 'click',
         eventLabel: title
-      });
+      })
 
-      this.props.onClick(e, {id:this.props.id, ...this.props.data})
+      this.props.onClick(e, { id:this.props.id, ...this.props.data })
     }
 
 
-
   }
-  handleMouseEnter(e){
-    if(this.props.currentProject) return;
+  handleMouseEnter(e) {
+    if(this.props.currentProject) return
 
     this.setState({
       mouseEvent:'hover',
       activeArea:e.nativeEvent.target.getBoundingClientRect()
     })
   }
-  handleMouseLeave(e){
-    this.setState({mouseEvent:'out', event:e, xFactor:0, yFactor:0})
+  handleMouseLeave(e) {
+    this.setState({ mouseEvent:'out', event:e, xFactor:0, yFactor:0 })
   }
 
-  render(){
-    let {title, tagline, body, platform,
+  render() {
+    let { title, tagline, body, platform,
           technologies, roles,
           header_image_small, header_background_color, header_background_size,
-          chapters} = this.props.data;
-    var styles = _.cloneDeep(this.constructor.styles);
+          chapters } = this.props.data
+    var styles = _.cloneDeep(this.constructor.styles)
 
-    if(!this.props.currentProject){
+    if(!this.props.currentProject) {
       styles.projectBox.cursor = 'pointer'
     }
-    styles.header.backgroundSize = header_background_size || styles.header.backgroundSize;
+    styles.header.backgroundSize = header_background_size || styles.header.backgroundSize
     // if(this.props.currentProject && title != this.props.currentProject){
     //   return null;
     // }
@@ -105,18 +104,18 @@ export class Project extends React.Component{
     //     content.push();
     //   }
     //
-    let projectZTranslation = 0;
-    if(this.state.mouseEvent =='hover'){
-      projectZTranslation = 40;
+    let projectZTranslation = 0
+    if(this.state.mouseEvent =='hover') {
+      projectZTranslation = 40
     }
     let projectCardTransformation = (value)=>{
-      let t = '';
+      let t = ''
 
-      t = 'translateZ(-'+value.x+'px) ';
+      t = 'translateZ(-'+value.x+'px) '
         // +'rotateX('+this.state.xFactor*50+'deg) '+
         // 'rotateY('+this.state.yFactor*50+'deg)';
 
-      return t;
+      return t
     }
     // let percRead;
     // if(this.props.currentProject){
@@ -142,7 +141,7 @@ export class Project extends React.Component{
             onTouchEnd={this.handleMouseLeave.bind(this)}
             >
 
-            <Motion defaultStyle={{x: 0}} style={{x: spring(projectZTranslation)}}>
+            <Motion defaultStyle={{ x: 0 }} style={{ x: spring(projectZTranslation) }}>
               {value =>
           <div style={{
               transform: projectCardTransformation(value),
@@ -150,20 +149,20 @@ export class Project extends React.Component{
 
             <div style={styles.dataContainer}>
               <div
-                style={{backgroundImage:header_image_small,
+                style={{ backgroundImage:header_image_small,
                   backgroundColor:header_background_color,...styles.header,
                   }}
                   onClick = {(e)=>{
-                    if(this.props.currentProject) return;
-                    this.handleMouseLeave(e);
-                    this.handleClick(e);
+                    if(this.props.currentProject) return
+                    this.handleMouseLeave(e)
+                    this.handleClick(e)
                   }}
                 />
               <div style={styles.metaBox}
                 onClick = {(e)=>{
-                  if(this.props.currentProject) return;
-                  this.handleMouseLeave(e);
-                  this.handleClick(e);
+                  if(this.props.currentProject) return
+                  this.handleMouseLeave(e)
+                  this.handleClick(e)
                 }}
                 >
                 <h2 style={styles.title}>{title}</h2>
@@ -179,7 +178,7 @@ export class Project extends React.Component{
               {
                 (this.props.currentProject)
                 ? <div
-                dangerouslySetInnerHTML={{__html:body}}></div>
+                dangerouslySetInnerHTML={{ __html:body }}></div>
               : null
               }
 

@@ -1,10 +1,11 @@
-import React, {Component} from 'react'
-import {Section} from '../Section.jsx'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Section from '../Section.jsx'
 import PictureGallery from '../PictureGallery.jsx'
-import 'whatwg-fetch'
+import { fetch } from 'whatwg-fetch'
 import _ from 'lodash'
 import { css, StyleSheet } from 'aphrodite/no-important'
-import {SideBlock} from '../SideBlock.jsx'
+import SideBlock from '../SideBlock.jsx'
 
 const cloudinaryBaseUrl = 'http://res.cloudinary.com/'
 const cloudinaryCloudName = 'dominictracey/'
@@ -22,7 +23,7 @@ class Photos extends Component  {
   componentDidMount() {
     // create an object with keys as album names and values being an array of image names
     const _this = this
-    cloudinaryAlbums.map(function(album, i) {
+    cloudinaryAlbums.map(function(album) {
       _this.getListByFolder(album)
     })
   }
@@ -32,7 +33,7 @@ class Photos extends Component  {
     const _this = this
     fetch(cloudinaryBaseUrl + cloudinaryCloudName + cloudinaryTagFragment + folder + '.json')
     .then((res)=>{
-      return res.json();
+      return res.json()
     }).
     then((json_res)=>{
       const newAlbum = {}
@@ -43,38 +44,44 @@ class Photos extends Component  {
       _this.setState(Object.assign({}, ...this.state, obj))
     })
     .catch(function(ex) {
-      console.log('parsing failed', ex)
-    });
+      console.log('parsing failed', ex) // eslint-disable-line
+    })
 
     return retval
   }
 
   getCloudinaryUri = (image) => {
     // http://res.cloudinary.com/dominictracey/image/upload/v1495214231/tango/14435233_10157779381190001_5920112255922826196_o_1.jpg
-    if (!!image) {
-      //return cloudinaryBaseUrl + cloudinaryCloudName + cloudinaryImageFragment + 'v' + image.version + '/' + image.public_id + '.' + image.format
-      //http://res.cloudinary.com/dominictracey/image/upload/a_exif
-      return `${cloudinaryBaseUrl}${cloudinaryCloudName}${cloudinaryImageFragment}v${image.version}/${image.public_id}.${image.format}`
+    if (image) {
+      // return cloudinaryBaseUrl + cloudinaryCloudName + cloudinaryImageFragment + 'v' + image.version + '/' + image.public_id + '.' + image.format
+      // http://res.cloudinary.com/dominictracey/image/upload/a_exif
+      return `${cloudinaryBaseUrl}${cloudinaryCloudName}
+      ${cloudinaryImageFragment}v${image.version}/
+      ${image.public_id}.${image.format}`
     } else {
       return ``
     }
   }
 
   getCloudinaryThumbnail = (image, size) => {
-    //http://res.cloudinary.com/dominictracey/image/upload/c_scale,w_263/v1495214231/tango/14435233_10157779381190001_5920112255922826196_o_1.jpg
-    if (!!image) {
-      return `${cloudinaryBaseUrl}${cloudinaryCloudName}${cloudinaryImageFragment}c_scale,w_${size}/v${image.version}/${image.public_id}.${image.format}`
+    // http://res.cloudinary.com/dominictracey/image/upload/c_scale,w_263/v1495214231/tango/14435233_10157779381190001_5920112255922826196_o_1.jpg
+    if (image) {
+      return `${cloudinaryBaseUrl}${cloudinaryCloudName}
+      ${cloudinaryImageFragment}c_scale,w_${size}/v
+      ${image.version}/${image.public_id}.${image.format}`
     } else {
       return ``
     }
   }
 
   getCloudinarySrcSet = (image, size) => {
-    //http://res.cloudinary.com/dominictracey/image/upload/c_scale,w_1024/1495214…w_320/1495214280/tango/13227370_1356785671002054_7085504404868109947_o.jpg
+    // http://res.cloudinary.com/dominictracey/image/upload/c_scale,w_1024/1495214…w_320/1495214280/tango/13227370_1356785671002054_7085504404868109947_o.jpg
     // good: http://res.cloudinary.com/dominictracey/image/upload/c_scale,w_1024/v1495214231/tango/14435233_10157779381190001_5920112255922826196_o_1.jpg
     // badd: http://res.cloudinary.com/dominictracey/image/upload/c_scale,w_1024/1495214313/tango/11822621_10101149219042634_1349847227206266514_n.jpg
-    if (!!image) {
-      return `${cloudinaryBaseUrl}${cloudinaryCloudName}${cloudinaryImageFragment}c_scale,w_${size}/v${image.version}/${image.public_id}.${image.format}`
+    if (image) {
+      return `${cloudinaryBaseUrl}${cloudinaryCloudName}
+      ${cloudinaryImageFragment}c_scale,w_${size}/v
+      ${image.version}/${image.public_id}.${image.format}`
     } else {
       return ``
     }
@@ -116,7 +123,8 @@ class Photos extends Component  {
     var gallery = []
     var thumbnailSize = this.calcThumbnailSize(this.props.windowWidth)
     album.resources.map((image) => {
-      const caption = image.context && image.context.custom && image.context.custom.caption ? image.context.custom.caption : ''
+      const caption = image.context && image.context.custom && image.context.custom.caption
+      ? image.context.custom.caption : ''
       const alt = image.context && image.context.custom && image.context.custom.alt ? image.context.custom.alt : 'photo'
       const img = {
         src: this.getCloudinaryUri(image),
@@ -132,37 +140,47 @@ class Photos extends Component  {
       }
       gallery.push(img)
     })
-    return Object.assign({}, album, {gallery: gallery})
+    return Object.assign({}, album, { gallery: gallery })
   }
 
   render() {
-    const { scrollTop, icon, title, subtitle } = this.props
+    const { icon, title, subtitle } = this.props
 
     if (_.isEmpty(this.state)) { return null }
 
-    let h = this.props.scrollTop % 360; // Originally was hue 60,43%
-    //const album = this.state.tango.gallery
+    //let h = scrollTop % 360; // Originally was hue 60,43%
 
     return(
-      <Section {...this.props}
+      <Section
+        // {...this.props}
         // parentName = {this.constructor.displayName || constructor.name || undefined}
-        fixed_column={<SideBlock {...this.props}><div style={{color:'#fff'}}>
-          <div><i className={"icon-"+icon} style={{color:'#E54C53'}}/></div>
-          <div className="section-title" >{title}</div>
-          <div className='section-subtitle' dangerouslySetInnerHTML={{__html:subtitle}}></div>
-          </div>
+        fixed_column={
+          <SideBlock
+            // ...this.props
+          >
+            <div style={{ color:'#fff' }}>
+              <div><i className={"icon-"+icon} style={{ color:'#E54C53' }}/></div>
+              <div className='section-title' >{title}</div>
+              <div className='section-subtitle' dangerouslySetInnerHTML={{ __html:subtitle }}></div>
+            </div>
           </SideBlock>
-        }
-      >
-        {Object.keys(this.state).map( (key) => {
+        }>
+        {Object.keys(this.state).map((key) => {
           return (
             <div className={css(classes.gallery)} key={key}>
               <PictureGallery images={this.state[key].gallery} theme={theme} showThumbnails heading={key}/>
-            </div>)
+          </div>)
         })}
-    </Section>)
-  }
+      </Section>)
+    }
+}
 
+Photos.propTypes = {
+  windowWidth: PropTypes.number,
+  scrollTop: PropTypes.number,
+  icon: PropTypes.string,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
 }
 
 // const THEMED_IMAGES = [
@@ -190,7 +208,7 @@ const classes = StyleSheet.create({
   gallery: {
     lineHeight: '1em',
     '@media (min-width: 500px)': {
-        paddingLeft: '20px',
+      paddingLeft: '20px',
     },
   },
   title: {
@@ -199,58 +217,58 @@ const classes = StyleSheet.create({
 })
 
 const theme = {
-	// container
-	container: { background: 'rgba(255, 255, 255, 0.9)' },
+  // container
+  container: { background: 'rgba(255, 255, 255, 0.9)' },
 
-	// arrows
-	arrow: {
-		backgroundColor: 'rgba(255, 255, 255, 0.8)',
-		fill: '#222',
-		opacity: 0.6,
-		transition: 'opacity 200ms',
+  // arrows
+  arrow: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    fill: '#222',
+    opacity: 0.6,
+    transition: 'opacity 200ms',
 
-		':hover': {
-			opacity: 1,
-		},
-	},
-	arrow__size__medium: {
-		borderRadius: 40,
-		height: 40,
-		marginTop: -20,
+    ':hover': {
+      opacity: 1,
+    },
+  },
+  arrow__size__medium: {
+    borderRadius: 40,
+    height: 40,
+    marginTop: -20,
 
-		'@media (min-width: 768px)': {
-			height: 70,
-			padding: 15,
-		},
-	},
-	arrow__direction__left: { marginLeft: 10 },
-	arrow__direction__right: { marginRight: 10 },
+    '@media (min-width: 768px)': {
+      height: 70,
+      padding: 15,
+    },
+  },
+  arrow__direction__left: { marginLeft: 10 },
+  arrow__direction__right: { marginRight: 10 },
 
-	// header
-	close: {
-		fill: '#D40000',
-		opacity: 0.6,
-		transition: 'all 200ms',
+  // header
+  close: {
+    fill: '#D40000',
+    opacity: 0.6,
+    transition: 'all 200ms',
 
-		':hover': {
-			opacity: 1,
-		},
-	},
+    ':hover': {
+      opacity: 1,
+    },
+  },
 
-	// footer
-	footer: {
-		color: 'black',
-	},
-	footerCount: {
-		color: 'rgba(0, 0, 0, 0.6)',
-	},
+  // footer
+  footer: {
+    color: 'black',
+  },
+  footerCount: {
+    color: 'rgba(0, 0, 0, 0.6)',
+  },
 
-	// thumbnails
-	thumbnail: {
-	},
-	thumbnail__active: {
-		boxShadow: '0 0 0 2px #00D8FF',
-	},
-};
+  // thumbnails
+  thumbnail: {
+  },
+  thumbnail__active: {
+    boxShadow: '0 0 0 2px #00D8FF',
+  },
+}
 
 export default Photos

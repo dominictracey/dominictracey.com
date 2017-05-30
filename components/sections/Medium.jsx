@@ -1,19 +1,19 @@
-import React from 'react';
-import {Section} from '../Section.jsx';
-import {SideBlock} from '../SideBlock.jsx';
+import React from 'react'
+import Section from '../Section.jsx'
+import SideBlock from '../SideBlock.jsx'
 
-var _ = require('lodash');
-import 'whatwg-fetch';
+var _ = require('lodash')
+import 'whatwg-fetch'
 
-class StoryMeta extends React.Component{
+class StoryMeta extends React.Component {
 
-  render(){
-    var styles = _.cloneDeep(this.constructor.styles);
+  render() {
+    var styles = _.cloneDeep(this.constructor.styles)
     return <div>
-      <div style={{...styles.metadata, ...styles.tagLine}}>
+      <div style={{ ...styles.metadata, ...styles.tagLine }}>
         <i className='icon-tag'/>
         {this.props.post.virtuals.tags.map((tag,i)=>{
-          return <span style={{marginLeft:5, marginRight:5}} key={i}>{tag.name}</span>
+          return <span style={{ marginLeft:5, marginRight:5 }} key={i}>{tag.name}</span>
         })}
         </div>
       <div style={styles.boundingBox}>
@@ -22,7 +22,7 @@ class StoryMeta extends React.Component{
       <div style={styles.name}>{this.props.author.name}</div>
     <div style={styles.metadata}>
     {this.props.post.virtuals.latestPublishedAtAbbreviated}
-    <span className="middotDivider"></span>
+    <span className='middotDivider'></span>
   { Math.ceil(this.props.post.virtuals.readingTime) + ' min read'}
     </div>
 
@@ -66,12 +66,12 @@ StoryMeta.styles = {
     lineHeight: 1.4
   }
 }
-class Story extends React.Component{
-  constructor(props){
+class Story extends React.Component {
+  constructor(props) {
     super(props)
   }
-  render(){
-    var styles = _.cloneDeep(this.constructor.styles);
+  render() {
+    var styles = _.cloneDeep(this.constructor.styles)
     return <a style={styles.boundingBox}
       target='_blank'
        href={'https://medium.com/@'+this.props.me.username+'/'+this.props.uniqueSlug}>
@@ -112,34 +112,34 @@ Story.styles = {
     color: 'rgba(0,0,0,.8)'
   }
 }
-export class Medium extends React.Component{
-  constructor(props){
-    super(props);
+
+export default class Medium extends React.Component {
+  constructor(props) {
+    super(props)
     this.state = {
       posts:[],
     }
-
   }
 
-  componentDidMount(){
+  componentDidMount() {
     fetch('https://michaelcereda.com/scrapers/medium.php')
     .then((res)=>{
-      return res.json();
+      return res.json()
     }).
     then((json_res)=>{
-      this.setState(json_res);
+      this.setState(json_res)
     })
     .catch(function(ex) {
-    console.log('parsing failed', ex)
-  });
+    console.log('parsing failed', ex)  // eslint-disable-line
+  })
   }
-  render(){
+  render() {
     let stories = this.state.posts.map((post,i)=>{
       return <Story {...post} me={this.state.me} key={i}/>
-    });
-    let storiesContainer={};
-    if(!this.state.posts.length){
-      stories = <h3>I can't contact medium right now, try refreshing the page</h3>;
+    })
+    let storiesContainer={}
+    if(!this.state.posts.length) {
+      stories = <h3>I can't contact medium right now, try refreshing the page</h3>
       storiesContainer = {
           position : 'absolute',
           top : 0,
@@ -150,8 +150,7 @@ export class Medium extends React.Component{
           color: '#525252',
           display: 'flex',
           alignItems: 'center'
-      };
-
+      }
 
 
     }
@@ -167,7 +166,7 @@ export class Medium extends React.Component{
       }
       scollableBgColor='#FAFAFA'
       >
-      <div style={{padding:10, display:'flex', flexDirection:'column', ...storiesContainer}}>
+      <div style={{ padding:10, display:'flex', flexDirection:'column', ...storiesContainer }}>
       { stories }
       </div>
     </Section>)

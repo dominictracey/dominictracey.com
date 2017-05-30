@@ -1,43 +1,42 @@
-import React from 'react';
-import { Link } from 'react-router'
-import { prefixLink } from 'gatsby-helpers'
-var _ = require('lodash');
+import React from 'react'
+import PropTypes from 'prop-types'
+var _ = require('lodash')
 
-import {Motion, spring, presets} from 'react-motion';
+import { Motion, spring, presets } from 'react-motion'
 
-import {Navigator} from '../utils/navigator.js';
+import { Navigator } from '../utils/navigator.js'
 
-export class Menu extends React.Component{
-  constructor(props){
-    super(props);
+export default class Menu extends React.Component {
+  constructor(props) {
+    super(props)
 
     this.state = {
       isOpen:false
     }
   }
-  toggleMenu(){
-    if(this.props.closeSection){
-      this.props.onCloseSectionClick && this.props.onCloseSectionClick();
+  toggleMenu() {
+    if(this.props.closeSection) {
+      this.props.onCloseSectionClick && this.props.onCloseSectionClick()
     } else {
-      this.setState({isOpen:!this.state.isOpen});
+      this.setState({ isOpen:!this.state.isOpen })
     }
 
 
   }
-  render(){
+  render() {
 
     // Clone the CSS styles and set the border-color CSS property.
     // var styles = _.cloneDeep(this.constructor.styles);
     // styles.notification.borderColor = this.props.color;
     //
-    var styles = _.cloneDeep(this.constructor.styles);
-    let hoverStyle = {};
-    if (this.state.isHover) hoverStyle = styles.containerHover;
+    var styles = _.cloneDeep(this.constructor.styles)
+    let hoverStyle = {}
+    if (this.state.isHover) hoverStyle = styles.containerHover
 
-    if(this.props.closeSection){
-      styles.container.backgroundColor = '#c72020';
-      styles.container.left='inherit';
-      styles.container.right=10;
+    if(this.props.closeSection) {
+      styles.container.backgroundColor = '#c72020'
+      styles.container.left='inherit'
+      styles.container.right=10
     }
 
     let menuItems = this.props.sections.map((item, i)=>{
@@ -46,17 +45,19 @@ export class Menu extends React.Component{
         className='menu-item'
         style={styles.link} key={i}
         onClick={(section_name=>(e)=>{
-          Navigator.scrollTo(section_name);
-          e.preventDefault();
+          Navigator.scrollTo(section_name)
+          e.preventDefault()
         })(item.section)}
         >
           <i className={'icon-'+item.component.props.icon}/>
 
       </div>
-    });
+    })
 
-    return <Motion defaultStyle={{x: styles.container.height}}
-      style={{x: spring((this.state.isOpen)? this.props.sections.length*52 : styles.container.height, presets.wobbly)}}>
+    return <Motion defaultStyle={{ x: styles.container.height }}
+      style={{ x: spring((this.state.isOpen)
+        ? this.props.sections.length*52
+        : styles.container.height, presets.wobbly) }}>
       {value =>
         <div
           style={{
@@ -65,10 +66,10 @@ export class Menu extends React.Component{
             ...hoverStyle
           }}
           onClick={this.toggleMenu.bind(this)}
-          onMouseOver={()=>{this.setState({isHover:true})}}
-          onMouseOut={()=>{this.setState({isHover:false})}}
+          onMouseOver={()=>{this.setState({ isHover:true })}}
+          onMouseOut={()=>{this.setState({ isHover:false })}}
           >
-          <div style={{...styles.toggleButton,marginTop:(this.props.closeSection)?3:7}}>
+          <div style={{ ...styles.toggleButton,marginTop:(this.props.closeSection)?3:7 }}>
             {(this.props.closeSection)?
               <i className='icon-close'
                 style={styles.icon}/>
@@ -91,6 +92,12 @@ export class Menu extends React.Component{
 
 
   }
+}
+
+Menu.propTypes = {
+  closeSection: PropTypes.bool,
+  onCloseSectionClick: PropTypes.func,
+  sections: PropTypes.array,
 }
 
 Menu.styles = {

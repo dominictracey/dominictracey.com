@@ -1,17 +1,20 @@
-import React from 'react';
-import access from 'safe-access';
-var _ = require('lodash');
+import React from 'react'
+import PropTypes from 'prop-types'
 
-export class Fixed extends React.Component{
-  constructor(props){
-    super(props);
+var _ = require('lodash')
 
-  }
-  render(){
-    var styles = _.cloneDeep(this.constructor.styles);
+const Fixed = (props) => {
 
-    return(<div style={styles.container}>{this.props.children}</div>)
-  }
+  const { children } = props
+
+  var styles = _.cloneDeep(this.constructor.styles)
+
+  return(<div style={styles.container}>{children}</div>)
+}
+
+
+Fixed.propTypes = {
+  children: PropTypes.node,
 }
 
 Fixed.styles = {
@@ -20,3 +23,5 @@ Fixed.styles = {
     width: '50%'
   }
 }
+
+export default Fixed

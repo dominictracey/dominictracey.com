@@ -1,25 +1,21 @@
- import React from 'react';
-import ReactDOM from 'react-dom';
-import {Project} from '../Project.jsx';
-import {SVGStylish} from '../svg/SVGStylish.jsx';
-import {Section} from '../Section.jsx';
-import {SideBlock} from '../SideBlock.jsx';
-import {Navigator} from '../../utils/navigator.js';
-import {Fixed} from '../Fixed.jsx';
-var _ = require('lodash');
+import React from 'react'
+import PropTypes from 'prop-types'
+import Project from '../Project.jsx'
+import Section from '../Section.jsx'
+import SideBlock from '../SideBlock.jsx'
+import { Navigator } from '../../utils/navigator.js'
 
-import VelocityTransitionGroup from 'velocity-react/velocity-transition-group';
-import stylish from '../../pages/assets/stylish.svg';
-import {slugify} from '../../utils/strings.js'
+import VelocityTransitionGroup from 'velocity-react/velocity-transition-group'
 
-
-export class ProjectList extends React.Component{
-  constructor(props){
-    super(props);
+export default class ProjectList extends React.Component {
+  constructor(props) {
+    super(props)
     this.state = {
       isProjectSelected: false,
       currentProject: ''
-    };
+    }
+
+    this.handleSelectProject = this.handleSelectProject.bind(this)
 
   }
   // componentDidUpdate() {
@@ -29,61 +25,61 @@ export class ProjectList extends React.Component{
   // //node.scrollTop = node.scrollHeight;
   // }
 
-  scrollToSectionTop(){
-    var node = ReactDOM.findDOMNode(this);
-    var elementBox = node.getBoundingClientRect();
+  scrollToSectionTop() {
+    //var node = ReactDOM.findDOMNode(this)
+    //var elementBox = node.getBoundingClientRect()
     //window.scroll(0, elementBox.top);
   }
-  handleSelectProject(e, currentProject){
 
-    ((window.isMobile)?
-      Navigator
-        .scrollTo(currentProject.id)
-      :
-      Navigator
-        .scrollTo(this.props.section_name)
-    )
-      .then(()=>{
-        this.setState({
-          isProjectSelected: true,
-          currentProject : currentProject
-        })
-      })
+  handleSelectProject(e, currentProject)  {
+    const { section_name, onProjectOpen } = this.props
+
+    // if (window.isMobile) {
+    //   await Navigator.scrollTo(currentProject.id)
+    // } else {
+    //   await Navigator.scrollTo(section_name)
+    // }
+
+    this.setState({
+      isProjectSelected: true,
+      currentProject : currentProject
+    })
 
 
-    this.props.onProjectOpen && this.props.onProjectOpen(e,currentProject);
+    onProjectOpen(e,currentProject)
   }
-  handleGoToProject(pid){
-    Navigator.scrollTo(pid);
+
+  handleGoToProject(pid) {
+    Navigator.scrollTo(pid)
   }
-  handleCloseProject(){
-    ((window.isMobile)?
-      Navigator
-        .scrollTo(this.state.currentProject.id)
-      :
-      Navigator
-        .scrollTo(this.props.section_name)
-    )
-      .then(()=>{
-        this.setState({
-          isProjectSelected:false,
-          currentProject:''
-        })
-      })
+
+  handleCloseProject() {
+    // if (window.isMobile) {
+    //   await Navigator.scrollTo(this.state.currentProject.id)
+    // } else {
+    //   await Navigator.scrollTo(this.props.section_name)
+    // }
+
+    this.setState({
+      isProjectSelected:false,
+      currentProject:''
+    })
 
   }
 
-  render(){
-    const isSmallScreen = this.windowWidth<800 || this.props.isSmallScreen;
+  render() {
+    const { section_name, projects } = this.props
+
+    //var isSmallScreen = this.windowWidth<800 || this.props.isSmallScreen
 
     let opensource = []
-    let projects = this.props.projects.map((project, i)=>{
-      let projectId = Navigator.genId([this.props.section_name,project.data.title]);
+    projects.map((project, i)=>{
+      let projectId = Navigator.genId([section_name,project.data.title])
       if(project.data.type.toLowerCase() == 'opensource') {
-          if(opensource.length !== 0) opensource.push(<span className="middotDivider"
-          key={opensource.length+1}></span>);
+          if(opensource.length !== 0) opensource.push(<span className='middotDivider'
+          key={opensource.length+1}></span>)
           opensource.push(<span
-            style={{cursor:'pointer', textDecoration:'underline'}}
+            style={{ cursor:'pointer', textDecoration:'underline' }}
             onClick={this.handleGoToProject.bind(this, projectId)}
             key={project.data.title+i}>{project.data.title}</span>)
       }
@@ -94,7 +90,8 @@ export class ProjectList extends React.Component{
           key={project.data.title}/>)
       }
 
-      if(this.state.isProjectSelected && this.state.currentProject && project.data.title == this.state.currentProject.title){
+      if(this.state.isProjectSelected && this.state.currentProject
+        && project.data.title == this.state.currentProject.title) {
         return (<Project {...project}
           id={projectId}
           onClose={this.handleCloseProject.bind(this)}
@@ -103,23 +100,22 @@ export class ProjectList extends React.Component{
           onClick={this.handleSelectProject.bind(this)}
           key={project.data.title}/>)
         }
-      });
+      })
 
     return(<Section
-      {...this.props}
+      // {...this.props}
       parentName = {this.constructor.displayName || constructor.name || undefined}
-
       isOpen={this.state.isProjectSelected}
       openItem = {this.state.currentProject}
       fixed_column={<SideBlock {...this.props}>
         <div>
-          <div><i className="icon-cup" style={{color:'#7fd093'}}/></div>
-        <div className="section-title" >Work</div>
+          <div><i className='icon-cup' style={{ color:'#7fd093' }}/></div>
+        <div className='section-title' >Work</div>
       <div className='section-subtitle'>Curious & Tenacious</div>
         </div>
         {(!this.state.isProjectSelected)?
-        <div className="section-menu-item">
-          <i className="icon-social-github"/>
+        <div className='section-menu-item'>
+          <i className='icon-social-github'/>
           <div className='inner'>
             <div >There is lots of my code on Github:
             </div>
@@ -134,13 +130,19 @@ export class ProjectList extends React.Component{
       }
       onCloseItem={this.handleCloseProject.bind(this)}
       >
-      <div style={{borderBottom:'5px solid #0C1926'}} className='striped-bg'>
+      <div style={{ borderBottom:'5px solid #0C1926' }} className='striped-bg'>
 
-        <VelocityTransitionGroup enter={{animation: "slideDown"}} leave={{animation: "slideUp"}}>
+        <VelocityTransitionGroup enter={{ animation: "slideDown" }} leave={{ animation: "slideUp" }}>
           {projects}
   </VelocityTransitionGroup>
 
       </div>
     </Section>)
   }
+}
+
+ProjectList.propTypes = {
+  //isSmallScreen: PropTypes.bool,
+  section_name: PropTypes.string,
+  projects: PropTypes.array,
 }

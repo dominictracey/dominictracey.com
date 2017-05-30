@@ -1,22 +1,20 @@
-import React from 'react';
-import access from 'safe-access';
-var _ = require('lodash');
+import React from 'react'
+import PropTypes from 'prop-types'
 
-export class Page extends React.Component{
-  constructor(props){
-    super(props);
+const Page = (props) => {
+  const { HTMLContent } = props
 
+  if(React.Children.count(this.props.children)) {
+    return(<div className='page'>
+      <div dangerouslySetInnerHTML={{ __html:HTMLContent }}></div>
+      {/* {this.props.children} */}
+    </div>)
   }
-  render(){
-    var styles = _.cloneDeep(this.constructor.styles);
-    if(React.Children.count(this.props.children)){
-      return(<div className="page">
-        <div dangerouslySetInnerHTML={{__html:this.props.HTMLContent}}></div>
-        {this.props.children}
-      </div>)
-    }
-    return(<div className="page" dangerouslySetInnerHTML={{__html:this.props.HTMLContent}}></div>)
-  }
+  return(<div className='page' dangerouslySetInnerHTML={{ __html:HTMLContent }}></div>)
+}
+
+Page.propTypes = {
+  HTMLContent: PropTypes.string,
 }
 
 Page.styles = {
