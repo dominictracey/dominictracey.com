@@ -5,9 +5,12 @@ import _ from 'lodash'
 import access from 'safe-access'
 import { Menu } from '../components/Menu.jsx'
 import { MainSlider, ProjectList, AboutMe, Photos, Contact, Medium, Footer } from '../components/sections'
-
+import Helmet from 'react-helmet'
+import { config } from 'config'
 import { Navigator } from '../utils/navigator.js'
 import mobilecheck from '../utils/mobilecheck.js'
+import metadata from '../utils/metadata.js'
+
 // Styles for highlighted code blocks.
 import 'css/zenburn.css'
 
@@ -156,9 +159,11 @@ export default class Index extends React.Component {
             },
 
       ]
+
     Navigator.load(sitemap)
     //sortedPages.forEach((page) => {
     return (<div style={{position:'relative'}}>
+    <Helmet title={config.siteTitle} meta={metadata} />
     <Menu
       sections={sitemap}
       />

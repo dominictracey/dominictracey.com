@@ -36,6 +36,23 @@ module.exports = React.createClass({
             name="viewport"
             content="width=device-width, initial-scale=1.0"
           />
+          <meta property='og:type' content='website' />
+          <meta property='og:url' content='http://dominictracey.com' />
+          <meta property='og:title' content='Dominic Tracey' />
+          <meta property='og:image' content='http://dominictracey.com/assets/me.jpg' />
+          <meta property='og:description'
+            content='Dominic Tracey is a full stack developer and entreprenuer, based in Portland, Maine.' />
+          <meta property='og:site_name' content='Dominic Tracey' />
+          <meta property='og:locale' content='en_US' />
+
+          <meta name='twitter:card' content='assets/me.jpg' />
+          <meta name='twitter:site' content='@dominic_tracey' />
+          <meta name='twitter:creator' content='@dominic_tracey' />
+          <meta name='twitter:url' content='http://dominictracey.com' />
+          <meta name='twitter:title' content='Dominic Tracey' />
+          <meta name='twitter:description'
+            content='Dominic Tracey is a full stack developer and entreprenuer, based in Portland, Maine.' />
+          <meta name='twitter:image' content='http://dominictracey.com/assets/me.jpg' />
           {head.title.toComponent()}
           {head.meta.toComponent()}
           <TypographyStyle typography={typography} />
