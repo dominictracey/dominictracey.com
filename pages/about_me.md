@@ -16,7 +16,7 @@ I've been a software engineer for 25 years and try to stay out in front of the e
 
 I work with both front-end and back-end development, in a broad variety of technologies. I'm not an expert in everything, but I always learn new things every day.
 
-My current "go-to" development environment is React/Redux for front-end work and various choices on the backend including NodeJS/Express, GoLang, Google App Engine.
+My current "go-to" development environment is React/Redux for front-end work and various choices on the backend including Google App Engine/Java, NodeJS/Express and GoLang.
 
 Docker and Kubernetes aren't really optional for large scale projects these days.
 
